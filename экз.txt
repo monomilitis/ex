@@ -5,7 +5,9 @@
 5.1. Создаём страницу (Frame Grid.Row = "1") Не забыть имя
 5.2. Страница при запуске (MainFrame.Navigate(new *Имя страницы*());)
 6.1. класс manager (public static Frame MainFrame { get; set; })
-6.2. в Main прописать Manager.MainFrame = MainFrame;
+6.2. в Main прописать 
+            MainFrame.Navigate(new Start());
+            Manager.MainFrame = MainFrame;
 6.3. переходы (btn click f12 ( Manager.MainFrame.Navigate(new AddEditPage()); ))
 7.1 кнопка назад (Manager.MainFrame.GoBack();)
 7.2. Frame прописать ContentRendered="MainFrame_ContentRendered"
