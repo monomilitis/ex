@@ -1,0 +1,113 @@
+1. разметить на три строки (75, *, 30)
+2. логотип. Propertis, Resurses, Images, перетащить. билд - ресурс. тег Images (свойство source)
+3. заголовок через Header
+4. background и grid
+5.1. Создаём страницу (Frame Grid.Row = "1") Не забыть имя
+5.2. Страница при запуске (MainFrame.Navigate(new *Имя страницы*());)
+6.1. класс manager (public static Frame MainFrame { get; set; })
+6.2. в Main прописать Manager.MainFrame = MainFrame;
+6.3. переходы (btn click f12 ( Manager.MainFrame.Navigate(new AddEditPage()); ))
+7.1 кнопка назад (Manager.MainFrame.GoBack();)
+7.2. Frame прописать ContentRendered="MainFrame_ContentRendered"
+7.3. функция для скрытия на ГЭ:
+if (MainFrame.CanGoBack)
+{
+BtnBack.Visibility = Visibility.Visible;
+}
+else
+{
+BtnBack.Visibility = Visibility.Hidden;
+}
+7.4. Frame NavigationUIVisibility="Hidden"
+8. Глобальные стили. App.xaml
+<Style TargetType="Button">
+<Setter Property="Margin" Value="5"></Setter>
+...
+</Style>
+9. Подключение ADO.NET Entity Data Model (БД)
+Context.cs
+private static *имя*Entities _context;
+...
+public static *имя*Entities GetContext()
+{
+if (_context == null)
+_context = new *имя*Entities();
+return _context;
+} 
+10. вывод DataGrid (имя) AutoGenerateColumns = "False" IsReadOnly = "True"
+DataGrid.Columns
+DataGridTextColumn Header="*имя*" Binding="{Binding *название столбца*} Wight="*"
+DataGridTextColumn Header="*имя*" Binding="{Binding *название столбца*.*название*} Wight="*" (если нужно обратиться к подгруппе)
+f7 *имя*.ItemSource = *имя*Entities.GetContext().*имя таблицы*.ToList();
+11. Редактирование DataGridTemplateColumn wight auto   DataGridTemplateColumn.CellTemplate     DataTemplate    Button Content Ред *имя* и click
+12. добавление и удаление контеннт имя click 
+*до основной*
+private *название* _current*название* = new *название*();
+*после*
+DataContext = _current*название*
+13. добавление textblock и textbox text="{Bindidng *название*}" (combobox SelectedItem="{Bindidng *название*}" для выпадающего списка) 
+кнопка save  
+
+StringBuilder errors = new StringBuilder();
+if (string.IsNullOrWhiteSpace(_current*имя*.*название*))
+    errors.AppendLine("текст ошибки");
+if (_current*имя*.*название* < 1 || _current * имя *.* название * > 5))
+    errors.AppendLine("текст ошибки");
+if (_current * имя *.* название == null))
+    errors.AppendLine("текст ошибки");
+
+if (errors.Length > 0)
+{
+    MessageBox.Show(errors.ToString());
+    return;
+}
+
+if (_current * название *.Id == 0)
+    *имя * Entities.GetContext().* название *.Add(_current * название *);
+try
+{
+    *имя * Entities.GetContext().SaveChanges();
+    MessageBox.Show("Информация сохранена!");
+    Manager.MainFrame.GoBack();
+}
+catch (Exception ex)
+{
+    MessageBox.Show(ex.Message.ToString());
+}
+
+добавление
+
+AddEditPage(*Имя* selected*имя*)
+
+if (selected*имя* !=null)
+_current*имя* = selected*имя*;
+
+
+Title IsVisibleChanged="Page_IsVisibleChanged"
+*имя*Entities.GetContext().ChangeTracker.Entities().ToList().ForEach(p => p.Reload());
+DGrid.ItemSource = *имя*Entities.GetContext().*Название*.ToList();
+
+13.1. Combobox имя DisplayMemberPath="*название*"
+F7 *имя* ItemSource = *имя*Entities.GetContext().*название столбца*.ToList();
+
+14. редактирование
+Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Hotel));
+
+15. удаление
+var *имя*ForRemoving = Dgrid*имя*.SelectedItems.Cast<*имя*>().ToList();
+if (MessageBox.Show($"Точно удалить {hotelsForRemoving.*имя*} элементов?," "Внимание",
+MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+{
+try 
+{
+*имя*Entities.GetContext().*имя*.RemoveRange(*имя*ForRemoving);
+*имя*Entities.GetContext().SaveChanges();
+MessageBox.Show("Данные удалены!");
+
+*имя* ItemSource = *имя*Entities.GetContext().*название столбца*.ToList();
+}
+catch (Exception ex)
+{
+MessageBox.Show(ex.Message.ToString());
+}
+}
